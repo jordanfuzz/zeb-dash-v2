@@ -1,0 +1,14 @@
+{
+  "name": "zeb-dash-api",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "migrate": "node-pg-migrate up --migrations-dir db/migrations --database-url-var DATABASE_URL"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "node-pg-migrate": "^7.9.0",
+    "pg": "^8.13.0"
+  }
+}

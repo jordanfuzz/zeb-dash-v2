@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:16
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: zeb
+      POSTGRES_PASSWORD: zeb
+      POSTGRES_DB: zebdash
+    volumes:
+      - zeb-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U zeb -d zebdash"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: ./api
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://zeb:zeb@db:5432/zebdash
+      PORT: "3000"
+      BODY_LIMIT: "10mb"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  zeb-db-data:
